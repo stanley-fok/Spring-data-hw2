@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Homework 2: Tasks for sykaf1</title>
+</head>
+
+<body>
+<h1>Homework 2: Tasks for sykaf1</h1>
+
+<p>Your personal task is to develop a system for a train, carriage, and their seats.</p>
+
+<h2>Task 1: Configuration [12 marks]</h2>
+<ol>
+    <li>Add all the necessary dependencies for connecting to a MySQL database and showing JSPs. [7 marks]</li>
+    <li>Configure the application to use a MySQL database (username, password, etc.) and to print SQL statements on the console. [5 marks]</li>
+</ol>
+
+<h2>Task 2: Domain Classes [15 marks]</h2>
+<p>Create class <code>co2123.hw2.model.Train</code>. With the following private fields:
+<ol>
+    <li><code>int id</code></li>
+    <li><code>String description</code></li>
+    <li><code>List &ltCarriage&gt carriages</code></li>
+    <li><code>Carriage smallest</code></li>
+</ol>
+Generate necessary getters and setters. [3 marks]
+</p>
+<p>Create class <code>co2123.hw2.model.Carriage</code>. With the following private fields:
+<ul>
+    <li><code>String description</code></li>
+    <li><code>List &ltTrain&gt trains</code></li>
+    <li><code>List &ltSeat&gt seats</code></li>
+    <li><code>Seat comfiest</code></li>
+</ul>
+Generate necessary getters and setters. [3 marks]
+</p>
+<p>Create class <code>co2123.hw2.model.Seat</code>. With the following private fields:
+<ol>
+    <li><code>int identifier</code></li>
+    <li><code>int fee</code></li>
+</ol>
+Generate necessary getters and setters. [3 marks]
+</p>
+<p>Generate toString() methods for: [6 marks]
+<ul>
+    <li>Seat which prints out the <code>identifier</code> and <code>fee</code> of this class.</li>
+    <li>Carriage which prints out the <code>description</code>, <code>seats</code>, and <code>comfiest</code> of this class.</li>
+    <li>Train which prints out the <code>id</code>, <code>description</code>, <code>carriages</code>, and <code>smallest</code> of this class.</li>
+</ul>
+</p>
+<p>To format your toString(), integers should be displayed as id=X and Strings as description='X'. You can check your formatting using Task2Test.java. IntelliJ IDEA's in-built toString() generator should follow this format too. </p><p>NOTE: You must have created /listTrain, /listCarriage, and /listSeat from Task 5 as well as have at least one of each object stored in your database for the toString() tests to work.</p>
+
+<h2>Task 3: JPA Annotations [25 marks]</h2>
+<p>Annotate the classes in <code>co2123.hw2.model</code> based on these statements:
+<ul>
+    <li>Add the appropriate annotations so <code>Train</code>, <code>Carriage</code>, and <code>Seat</code> become tables in your database. [3 marks]</li>
+    <ul>
+        <li>Their primary keys should be <code>id</code>, <code>description</code>, and <code>identifier</code> respectively. [3 marks]</li>
+        <li>The primary keys of <code>Train</code> and <code>Seat</code> should be generated automatically. [2 marks]</li>
+    </ul>
+    <li>A <code>train</code> can have many <code>carriages</code> and a <code>carriage</code> can belong to many <code>trains</code>. The relationship between them is bidirectional. Use mappedBy to indicate this. [2 marks]</li>
+    <li>A <code>carriage</code> can have multiple <code>seats</code> but one <code>seat</code> can only belong to one <code>carriage</code>. Use a join column as well as another annotation to indicate this. [2 marks]</li>
+    <li>A <code>carriage</code> can have only one <code>comfiest</code> which belongs to one <code>carriage</code>. [2 marks]</li>
+    <li>Many <code>carriages</code> may have one <code>smallest</code>. This <code>smallest</code> can belong to multiple <code>carriages</code>. [2 marks]</li>
+    <li>If you save a <code>train</code>, the <code>carriages</code> in the list of <code>carriages</code> should be saved too. [2 marks]</li>
+    <li>If a <code>carriage</code> is deleted, all its <code>seats</code> should be deleted too. [2 marks].</li>
+    <li>If a <code>carriage</code> is loaded, all its <code>seats</code> should be loaded too. [2 marks]</li>
+</ul>
+</p>
+<p>Please <strong>do not</strong> manually override the column names by using, for example, (name="NewName") on a @JoinColumn annotation.</p>
+<p>Create CRUD repositories for each of your model classes inside the package <code>co2123.hw2.repo</code> called <code>TrainRepository</code>, <code>CarriageRepository</code>, and <code>SeatRepository</code>. [3 marks]</p>
+
+<h2>Task 4: CRUD Repository Methods [20 marks]</h2>
+<p>
+<ul>
+    <li>Add a method in <code>TrainRepository</code> which finds the <code>trains</code> by <code>description</code>. [5 marks]</li>
+    <li>Add a method in <code>TrainRepository</code> which finds the <code>trains</code> by the <code>description</code> of their <code>smallest</code>. [5 marks]</li>
+    <li>Add a method in <code>CarriageRepository</code> which finds the <code>carriages</code> by <code>description</code>. [5 marks]</li>
+    <li>Add a method in <code>SeatRepository</code> which finds the <code>seats</code> by <code>fee</code>. [5 marks]</li>
+</ul>
+</p>
+<p>All CRUD repository methods <strong>must</strong> start with findBy (and not findAllBy, findOneBy, findTrainsBy etc.)</p>
+
+<h2>Task 5: Displaying Data (Model, View, and Controller) [28 marks]</h2>
+<p>
+<ul>
+    <li>In <code>co2123.hw2.HW2Application</code>, create and store at one instance of every class from <code>co2123.hw2.model</code>. [9 marks]</li>
+    <ul>
+        <li>You will need to use the repositories you have created.</li>
+        <li>You must use implement CommandLineRunner and override its run method in order to create these instances.</li>
+        <li>The database should contain one row on each of the tables with no null or empty records.</li>
+    </ul>
+    <li>Create the controller <code>co2123.hw2.controller.ListController</code> which has three methods: /listTrain, /listCarriage, and /listSeat [5 marks]</li>
+    <ul>
+        <li>They all return the JSP <code>/src/main/webapp/WEB-INF/views/list.jsp</code> </li>
+        <li>Each method should list all objects (their toString() representations) from the database on the JSP. For example, /listTrain lists all the trains in the database, /listCarriage lists all the carriages, and /listSeat lists all the seats. [4 marks]</li>
+        <li>The model attribute in each method which contains the list of trains/carriages/seats should be called <code>data</code>.</li>
+        <li>Use a forEach loop on <code>list.jsp</code> to display the data.</li>
+    </ul>
+    <li>Create the controller <code>co2123.hw2.controller.DeleteController</code> [1 mark]</li>
+    <li>For each class in package <code>co2123.hw2.model</code>, add a controller method to delete an instance from the database and redirect to the URL <code>http://localhost:8080/</code></li>
+    <ul>
+        <li>For class <code>Train</code>, the request http://localhost:8080/deleteTrain?id=5 should delete the train with the primary key id from the database. [3 marks]</li>
+        <li>For class <code>Carriage</code>, the request http://localhost:8080/deleteCarriage?description=Example should delete the carriage with the primary key description from the database. [3 marks]</li>
+        <ul>
+            <li>HINT: You must delete all references to this carriage in the train.</li>
+        </ul>
+        <li>For class <code>Seat</code>, the request http://localhost:8080/deleteSeat?identifier=2 should delete the seat with the primary key identifier from the database. [3 marks]</li>
+    </ul>
+</ul>
+</p>
+</body>
+</html>
